@@ -254,8 +254,10 @@ void game_reset() {
     printf("Starting new game...\n");
     game_over = 0;
     game_opened_fields = 0;
-    game = malloc(game_size.x * game_size.y * sizeof(Field));
-    memset(game, 0, game_size.x * game_size.y * sizeof(Field));
+    if(game){
+        free(game);
+    }
+    game = calloc(game_size.x * game_size.y, sizeof(Field));
 
     game_populate((Vector2) {0, 0});
 }
