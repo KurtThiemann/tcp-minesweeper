@@ -75,7 +75,7 @@ void server_client_disconnect(int client_id) {
  * @return
  */
 int server_send_client(int client_id, char *message, size_t length) {
-    int res = write(server_conn_clients[client_id].fd, message, length);
+    int res = send(server_conn_clients[client_id].fd, message, length, MSG_NOSIGNAL);
     if (res == -1) {
         server_client_disconnect(client_id);
     }
@@ -130,7 +130,7 @@ void server_init_client(int client_socket_fd) {
         }
     }
     if (free_id == -1) {
-        char msg[] = "Connection limit reached\n";
+        char msg[] = "Connection limit reached\r\n";
         printf("Failed to accept new connection: Too many clients already connected\n");
         send(client_socket_fd, msg, sizeof(msg), 0);
         close(client_socket_fd);
